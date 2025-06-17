@@ -14,8 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +34,7 @@ import com.easy.geoWarden.utils.CurrentLocation
 @Composable
  fun HomeView( onNavigate:() -> Unit) {
      val viewModel: HomeViewModel = viewModel()
-    val currentLocationData by viewModel.currentLocation.observeAsState()
+
 
   GeoWardenTheme {
     Box(Modifier
@@ -70,7 +68,7 @@ import com.easy.geoWarden.utils.CurrentLocation
 
 
                 //Box Com card da localização atual
-                Box(modifier = Modifier.fillMaxWidth()){ CurrentLocationCard(location = currentLocationData) }
+                Box(modifier = Modifier.fillMaxWidth()){ CurrentLocationCard(location = null) }
 
 
                 //Criador de Coleção de Locais

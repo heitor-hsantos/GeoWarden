@@ -9,7 +9,7 @@ import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 
 class AuthRepository {
-    private lateinit var auth: FirebaseAuth
+    private  var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _userState = MutableStateFlow<UserState>(UserState.noSession)
     var userState: StateFlow<UserState> = _userState
 
@@ -26,7 +26,9 @@ class AuthRepository {
 
     suspend fun login(email: String, password: String) {
         try {
+            _userState.value = UserState.Loading
             auth.signInWithEmailAndPassword(email, password).await()
+            _userState.value = UserState.LoggedIn(auth.currentUser!!)
         } catch (e: Exception){
             _userState.value = UserState.Error(e.message ?: "Login failed")
             Timber.tag(TAG).w(e, "Falha no login")

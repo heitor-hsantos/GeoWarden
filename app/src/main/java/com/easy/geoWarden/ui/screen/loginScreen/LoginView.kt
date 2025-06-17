@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
@@ -25,9 +26,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easy.geoWarden.data.repository.AuthRepository
+import com.easy.geoWarden.data.user.UserState
 import com.easy.geoWarden.ui.Theme.theme.GeoWardenTheme
 import com.easy.geoWarden.ui.Theme.theme.GradientColorLightBlueToDarkBlue2
 import com.easy.geoWarden.ui.Theme.theme.GradientColorLightBlueToDarkBlue3
@@ -38,9 +42,11 @@ import com.easy.geoWarden.ui.Theme.theme.GradientColorLightBlueToDarkBlue3
     val viewModel: LoginViewModel = LoginViewModel(
         authRepository = AuthRepository()
     )
-    val authState = viewModel.userState
+    val authState = viewModel.userState.collectAsStateWithLifecycle()
     var texto by remember { mutableStateOf("") }
     var passwd by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
+
     GeoWardenTheme {
 
 
@@ -100,23 +106,36 @@ import com.easy.geoWarden.ui.Theme.theme.GradientColorLightBlueToDarkBlue3
                             )
                         },
                         trailingIcon = {
-                            if (passwd.isNotEmpty()) {
-                                IconButton(onClick = { passwd = "" }) {
-                                    Icon(Icons.Filled.Clear, contentDescription = "Ícone de limpar")
-                                }
+                            IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                                Icon(
+                                    imageVector = if (isPasswordVisible) Icons.Filled.Build else Icons.Filled.Lock,
+                                    contentDescription = if (isPasswordVisible) "Ocultar senha" else "Mostrar senha"
+                                )
                             }
                         },
                         keyboardOptions = KeyboardOptions(),
                         singleLine = true,
                         modifier = Modifier.padding(vertical = 8.dp),
-                        visualTransformation = PasswordVisualTransformation(),
+                        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+
 
                         )
                     Box(Modifier.padding(95.dp, 0.dp)) {
                         Button(onClick = { viewModel.Login(texto,passwd)}) {
-                            Text(text = "Login")
+                            // Exiba o estado de carregamento se necessário
+                            if (authState.value == UserState.Loading) {
+                                Text(text = "Carregando...")
+                            } else if (authState.value is UserState.Error) {
+                                Text(text = "Erro ao fazer login")
+                            } else if (authState.value is UserState.LoggedIn) {
+                                Text(text = "Login bem-sucedido")
+                            }
+                             else {
+                                Text(text = "Login")
+                            }
                         }
                     }
+                    //adicionar se houver erro o fundo altera a cor tambem
 
                 }
             }

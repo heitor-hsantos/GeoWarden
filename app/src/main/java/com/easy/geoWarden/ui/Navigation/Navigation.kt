@@ -42,9 +42,12 @@ fun NavigationGraph(modifier: Modifier){
         composable<Dest.RegisterScreen>{}
 
         composable<Dest.ConfigurationView>{
-            ConfigurationView{
-               navController.navigate(Dest.LoginView)}
-
+            // ConfigurationView já obtém seu ViewModel com hiltViewModel()
+            ConfigurationView(
+                onNavigateToLogin = { // Apenas a ação de navegação é passada
+                    navController.navigate(Dest.LoginView)
+                }
+            )
 
         }
 

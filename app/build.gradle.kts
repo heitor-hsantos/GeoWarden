@@ -6,7 +6,6 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.relay") version "0.3.12"
 
-    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -19,9 +18,11 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+       // buildConfigField("String","BASE_URl","api.openweathermap.org/")
+
     }
+
 
     buildTypes {
         release {
@@ -30,7 +31,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String","BASE_URl","api.openweathermap.org/")
+
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -41,13 +45,18 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+
     }
+
+
 }
 
 dependencies {
     // https://mvnrepository.com/artifact/com.google.dagger/hilt-compiler
-    implementation("com.google.dagger:hilt-compiler:2.56.2")
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+
     implementation(libs.google.firebase.auth)
     implementation(libs.androidx.room.runtime)
     implementation("com.google.android.gms:play-services-maps:19.2.0")

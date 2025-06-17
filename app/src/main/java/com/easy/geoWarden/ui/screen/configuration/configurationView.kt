@@ -24,20 +24,23 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.easy.geoWarden.data.user.UserState
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easy.geoWarden.ui.Theme.theme.GeoWardenTheme
 import com.easy.geoWarden.ui.Theme.theme.GradientColorBlueToBlack
 import com.easy.geoWarden.ui.Theme.theme.MarineBlue
 import com.easy.geoWarden.ui.screen.configuration.components.ConfigScrollable
 import com.easy.geoWarden.ui.screen.configuration.components.SaveLoginButton
 import com.easy.geoWarden.ui.screen.home.components.UserAvatar
+
+
 @Composable
-fun ConfigurationView(onNavigate:() -> Unit) {
-    val viewModel: ConfiguratinViewModel = viewModel()
-    val isLoggedIn = remember { mutableStateOf(UserState.UserSession) }
+fun ConfigurationView(onNavigateToLogin: () -> Unit,
+                      viewModel: ConfigurationViewModel = hiltViewModel()
+) {
+    
+    val authState = viewModel.userState.collectAsStateWithLifecycle()
     val notification = remember { mutableStateOf(false)}
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -76,12 +79,11 @@ fun ConfigurationView(onNavigate:() -> Unit) {
                                 Column(verticalArrangement = Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally)
                                 {
-                                    SaveLoginButton(snackbarHostState, scope, isLoggedIn, onNavigate)
-
+                                    SaveLoginButton(snackbarHostState, scope, authState, onNavigateToLogin)
+                                    //Note continuar a gerenciar o estado do login
                                 }
 
                             }
-
 
                             Box(
                                 modifier = Modifier.fillMaxSize(),
@@ -128,8 +130,3 @@ fun ConfigurationView(onNavigate:() -> Unit) {
 }
 
 
-@Preview(showBackground = true)
-@Composable
- fun PreviewConfigurationView(){
-     ConfigurationView(onNavigate = {})
- }

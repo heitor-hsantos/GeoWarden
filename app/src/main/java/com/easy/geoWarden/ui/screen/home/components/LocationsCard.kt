@@ -57,6 +57,7 @@ fun LocationsCard(){
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Text(text = "0 " + "% ", color = Color.White, fontSize = 25.sp)
+
                             Image(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.weather_hail),
                                 contentDescription = "imagem",

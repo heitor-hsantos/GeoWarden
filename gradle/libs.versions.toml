@@ -1,11 +1,13 @@
 [versions]
-agp = "8.9.0"
+agp = "8.10.0"
 
 converterGsonVersion = "2.11.0"
 firebaseBom = "33.10.0"
 gsonVersion = "2.12.1"
 hiltAndroid = "2.56.2"
 hiltAndroidCompiler = "2.56.2"
+hiltCompiler = "2.56.2"
+hiltNavigationCompose = "1.2.0"
 kotlinxSerializationCore = "version"
 kotlinxSerializationJson = "1.7.3"
 navigationCompose = "2.8.8"
@@ -27,6 +29,7 @@ runtimeLivedata = "1.8.0"
 ksp = "1.10.0-1.0.12"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-compose-v289 = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
@@ -42,6 +45,7 @@ google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
